@@ -31,6 +31,8 @@ public:
 	}
 	~ForwardList()
 	{
+		cout << "\n-------------------------------------\n";
+		while (Head) pop_front();//очищает список перед удалением
 		cout << "LDestructor:\t" << this << endl;
 	}
 	//						Adding elements:
@@ -43,6 +45,41 @@ public:
 		//3) новый элемент является head списка:
 		Head = New;
 	}
+	void push_back(int Data)
+	{
+		if (Head == nullptr)return push_front(Data);
+		Element* New = new Element(Data);
+		/*Element* Temp = Head;
+		while (Temp->pNext)
+		{
+			Temp = Temp->pNext;
+		}
+		Temp->pNext = New;*/
+		Element* Temp = Head;
+		for (; Temp->pNext != nullptr; Temp = Temp->pNext);
+		Temp->pNext = New;
+	}
+	//                      Removing elements
+	void pop_front()
+	{
+		Element* fr = Head;
+		Head = Head->pNext;
+		//удаление элемента из списка
+		delete fr;
+	}
+	void pop_back()
+	{
+		/*if (Head->pNext == nullptr)return pop_front();*/
+		Element* Temp = Head;
+		while (Temp->pNext->pNext!=nullptr)
+		{
+			Temp = Temp->pNext;
+		}
+		delete Temp->pNext;
+		Temp->pNext = nullptr;
+
+	}
+	
 	//						Methods:
 	void print()const
 	{
@@ -62,10 +99,16 @@ void main()
 	int n; //размер списка
 	cout << "Введите размер списка: "; cin >> n;
 
-	ForwardList List; //односвязный список 
+	ForwardList list; //односвязный список 
 	for (int i = 0; i < n; i++)
 	{
-		List.push_front(rand() % 100);
+		list.push_front(rand() % 100);
 	}
-	List.print();
+	list.print();
+	list.push_back(19);
+	list.print();
+	list.pop_front();
+	list.print();
+	list.pop_back();
+	list.print();
 }
