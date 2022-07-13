@@ -30,9 +30,51 @@ public:
 		cout << "EDestructor:\t" << this << endl;
 	}
 	friend class ForwardList;
+	friend class Iterator;
 	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
 };
 int Element::count = 0;
+class Iterator
+{
+	Element* Temp;
+public:
+	Iterator(Element* Temp = nullptr) :Temp(Temp)
+	{
+		cout << "ItConstructor:\t" << this << endl;
+	}
+	~Iterator()
+	{
+		cout << "ItDestructor:\t" << this << endl;
+	}
+
+	Iterator& operator++()
+	{
+		Temp = Temp->pNext;
+		return *this;
+	}
+	Iterator operator++(int)//suffix incr
+	{
+		Iterator old = *this;
+		Temp = Temp->pNext;
+		return old;
+	}
+	bool operator==(const Iterator& other)const   //const значит, что не меняем this
+	{
+		return this->Temp == other.Temp;
+	}
+	bool operator!=(const Iterator& other)const
+	{
+		return this->Temp != other.Temp;
+	}
+	const int& operator*()const
+	{
+		return Temp->Data;
+	}
+	 int& operator*()
+	{
+		return Temp->Data;
+	}
+};
 class ForwardList
 {
 	Element* Head; //указывает на начало элемента списка (голова списка)
@@ -42,6 +84,16 @@ public:
 	{
 		return Head;
 	}*/
+	// 1) begin()- возвращает итератор на началo контейнера
+	 Iterator begin()
+	{
+		return Head;
+	}
+	 //end()- возвращает итератор на конец контейнера
+    Iterator end() 
+	{
+		return nullptr;
+	}
 	ForwardList()
 	{
 		Head = nullptr; //когда head списка указ. на ноль - список пуст
@@ -59,6 +111,7 @@ public:
 			//it - итератор для проходжения по initializer_list
 			push_back(*it); //разыменовываем it
 		}
+		
 	}
 	ForwardList(const ForwardList& other):ForwardList()
 	{
@@ -220,6 +273,7 @@ ForwardList operator+(const ForwardList& left, const ForwardList& right)
 //#define BASE_CHECK
 //#define OPERATOR_PLUS_CHECK
 //#define RANGE_BASED_ARRAY
+#define RANGE_BASED_FOR_LIST
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -288,6 +342,17 @@ void main()
 	cout << endl;
 //итератор 'i' последовательно принимает значение каждого элемента массива 
 #endif
+#ifdef RANGE_BASED_FOR_LIST
 	ForwardList list = { 3, 5, 8, 13, 21 };
-	list.print();
+	for (int i : list)
+	{
+		cout << i << tab;
+	}
+	cout << endl;
+	/*list.print();*/
+	/*for (Iterator it = list.begin(); it != list.end(); it++)
+	{
+		cout << *it << tab;
+	}*/
+#endif
 }
