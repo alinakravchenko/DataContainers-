@@ -82,6 +82,31 @@ public:
 			Tail = Tail->pNext = new Element(Data, nullptr, Tail);
 		size++;
 	}
+	void insert(int Data, int Index)
+	{
+		if (Index > size)return;
+		if (Index == 0)return push_front(Data);
+		if (Index == size)return push_back(Data);
+
+		Element* Temp;
+		if (Index < size / 2)
+		{
+			Temp = Head;
+			for (int i = 0; i < Index; i++)Temp = Temp->pNext;
+		}
+		else
+		{
+			Temp = Tail;
+			for (int i = 0; i < size - Index- 1; i++)Temp = Temp->pPrev;
+			/*Element* New = new Element(Data);
+			New->pNext = Temp;
+			New->pPrev = Temp->pPrev;
+			Temp->pPrev->pNext = New;
+			Temp->pPrev = New;*/
+			Temp->pPrev=Temp->pPrev->pNext= new Element(Data, Temp, Temp->pPrev);
+			size++;
+		}
+	}
 
 	//					                                            Removing Elements:
 	void pop_front()
@@ -108,7 +133,30 @@ public:
 		Tail->pNext = nullptr;
 		size--;
 	}
-
+	void erase(int Index)
+	{
+		if (Index > size)return;
+		if (Index == 0)return pop_front();
+		/*if (Index == size - 1) return pop_back();*/
+        //1)доходим до удаляемого элемента
+		Element* Temp;
+		if (Index < size / 2)
+		{
+			Temp = Head;
+			for (int i = 0; i < Index; i++)Temp = Temp->pNext;
+		}
+		else
+		{
+			Temp = Tail;
+			for (int i = 0; i < size-Index - 1; i++)Temp = Temp->pPrev;
+		}
+		//2)исключаем элемент из списка
+		Temp->pPrev->pNext = Temp->pNext;
+		Temp->pNext->pPrev = Temp->pPrev;
+		//3) удаляем элемент из памяти
+		delete Temp;
+		size--;
+    }
 	//					                                                  Methods:
 	void print()const
 	{
@@ -139,4 +187,32 @@ void main()
 	}
 	list.print();
 	list.reverse_print();
+	int value;
+	int Index;
+	cout << "Введите значение добавляемого элемента: "; cin >> value;
+	cout << "Введите индекс добавляемого элемента: "; cin >> Index;
+	list.insert(value, Index);
+	list.print();
+	list.reverse_print();
+	cout << "Введите индекс удаляемого элемента: "; cin >> Index;
+	list.erase(Index);
+	list.print();
+	list.reverse_print();
+
+
 }
+/*
+исключение (exception)
+throw exception бросить исключение 
+try
+{
+   
+}
+catch(type name) - ловит и обр. исключ.
+{
+
+}
+
+универсальный catch(...)
+{}
+*/
