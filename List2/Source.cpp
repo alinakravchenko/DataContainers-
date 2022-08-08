@@ -1,4 +1,5 @@
 #include<iostream>
+//#include<exception>
 using namespace std;
 using std::cin;
 using std::cout;
@@ -27,6 +28,127 @@ class List
 	//Element* Tail;
 	unsigned int size;
 public:
+	class Iterator 
+	{
+		Element* Temp;
+	public:
+		Iterator(Element* Temp) :Temp(Temp)
+		{
+			cout << "IConstructor:\t" << this << endl;
+		}
+		~Iterator()
+		{
+			cout << "IDestructor:\t" << this << endl;
+		}
+		Iterator& operator++()
+		{
+			Temp = Temp->pNext;
+			return *this;
+		}
+		Iterator operator++(int)
+		{
+			Iterator old = *this;
+			Temp = Temp->pNext;
+			return old;
+		}
+		Iterator& operator--()
+		{
+			Temp = Temp->pPrev;
+			return *this;
+		}
+		Iterator operator--(int)
+		{
+			Iterator old = *this;
+			Temp = Temp->pPrev;
+			return old;
+		}
+		bool operator==(const Iterator& other)const
+		{
+			return this->Temp == other.Temp;
+		}
+		bool operator!=(const Iterator& other)const
+		{
+			return this->Temp != other.Temp;
+		}
+
+		const int& operator*()const
+		{
+			return Temp->Data;
+		}
+		int& operator*()
+		{
+			return Temp->Data;
+		}
+	};
+	class ReverseIterator
+	{
+		Element* Temp;
+	public:
+		ReverseIterator(Element* Temp) :Temp(Temp)
+		{
+			cout << "RItConstructor:\t" << this << endl;
+		}
+		~ReverseIterator()
+		{
+			cout << "RItDestructor:\t" << this << endl;
+		}
+		ReverseIterator& operator++()
+		{
+			Temp = Temp->pPrev;
+			return *this;
+		}
+		ReverseIterator operator++(int)
+		{
+			ReverseIterator old = *this;
+			Temp = Temp->pPrev;
+			return old;
+		}
+		ReverseIterator& operator--()
+		{
+			Temp = Temp->pNext;
+			return *this;
+		}
+		ReverseIterator operator--(int)
+		{
+			ReverseIterator old = *this;
+			Temp = Temp->pNext;
+			return old;
+		}
+		bool operator==(const ReverseIterator& other)const
+		{
+			return this->Temp == other.Temp;
+		}
+		bool operator!=(const ReverseIterator& other)const
+		{
+			return this->Temp != other.Temp;
+		}
+		const int& operator*()const
+		{
+			return Temp->Data;
+		}
+		int& operator*()
+		{
+			return Temp->Data;
+		}
+	};
+	ReverseIterator rbegin()
+	{
+		return Tail;
+	}
+	ReverseIterator rend()
+	{
+		return nullptr;
+	}
+	Iterator begin()
+	{
+		return Head;
+	}
+	Iterator end()
+	{
+		return nullptr;
+
+	}
+
 	List()
 	{
 		//когда список пуст, его Head и Tail указывают на 0
@@ -34,6 +156,18 @@ public:
 		size = 0;
 		cout << "LConstructor:\t" << this << endl;
 	}
+	//передаём по ссылке, чтобы не создавать копию
+	List(const std:: initializer_list<int>&il) :List()
+	{
+		//int* - указатель
+		//const int* - констанстный указатель
+		//int const* - указатель на константу
+		//const int const* - конст указатель на константу
+		/*for (int const* it = il.begin(); it != il.end(); ++it)
+			push_back(*it);*/
+		for (int i : il)push_back(i);
+	}
+
 	~List()
 	{
 		//while (Head)pop_front();
@@ -84,7 +218,9 @@ public:
 	}
 	void insert(int Data, int Index)
 	{
-		if (Index > size)return;
+		if (Index > size)throw std::out_of_range("Error: Out of range exception");
+		//out of range - выход за пределы 
+			/*throw exception("Error: Out of range");*/
 		if (Index == 0)return push_front(Data);
 		if (Index == size)return push_back(Data);
 
@@ -135,7 +271,7 @@ public:
 	}
 	void erase(int Index)
 	{
-		if (Index > size)return;
+		if (Index > size)throw out_of_range("Error: Out of range exception in erace() function");
 		if (Index == 0)return pop_front();
 		/*if (Index == size - 1) return pop_back();*/
         //1)доходим до удаляемого элемента
@@ -173,10 +309,11 @@ public:
 		cout << "Количество элементов " << size << endl;
 	}
 };
-
+//#define BASE_CHECK
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef BASE_CHECK
 	int n;
 	cout << "Введите размер списка: "; cin >> n;
 	List list;
@@ -191,15 +328,40 @@ void main()
 	int Index;
 	cout << "Введите значение добавляемого элемента: "; cin >> value;
 	cout << "Введите индекс добавляемого элемента: "; cin >> Index;
-	list.insert(value, Index);
-	list.print();
-	list.reverse_print();
+	try
+	{
+
+		list.insert(value, Index);
+		list.print();
+		list.reverse_print();
+	}
+	catch (const exception& e)
+	{
+		//вывод на экран
+		cerr << e.what() << endl;
+	}
 	cout << "Введите индекс удаляемого элемента: "; cin >> Index;
+	try
+	{
 	list.erase(Index);
 	list.print();
 	list.reverse_print();
+	}
+	catch (const std::exception& e)
+	{
+		cerr << e.what() << endl;
+	}
+#endif //BASE_CHECK
+	List list = { 3,5,8,13,21 };
+	list.print();
+	for (int i : list)cout << i << tab; cout << endl;
 
-
+	List::ReverseIterator rend = list.rend();
+	for (List::ReverseIterator rit = list.rbegin(); rit != rend; ++rit)
+	{
+		cout << *rit << tab;
+	}
+	cout << endl;
 }
 /*
 исключение (exception)
