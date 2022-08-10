@@ -63,13 +63,13 @@ public:
 		{
 #ifdef DEBUG
 			cout << "CItConstructor:\t" << this << endl;
-#endif // DEBUG
+#endif
 		}
 		~ConstIterator()
 		{
 #ifdef DEBUG
 			cout << "CItDestructor:\t" << this << endl;
-#endif // DEBUG
+#endif 
 		}
 
 		ConstIterator& operator++()
@@ -102,13 +102,13 @@ public:
 		{
 #ifdef DEBUG
 			cout << "CRItConstructor:\t" << this << endl;
-#endif // DEBUG
+#endif 
 		}
 		~ConstReverseIterator()
 		{
 #ifdef DEBUG
 			cout << "CRItDestructor:\t" << this << endl;
-#endif // DEBUG
+#endif 
 		}
 
 		ConstReverseIterator& operator++()
