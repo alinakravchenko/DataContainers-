@@ -1,17 +1,21 @@
-﻿#include<iostream>
-/*
-------------------------------------------------
-Class object; - �������� ������� �������� ������ 
-Class<type> object; - �������� ������� ���������� ������
-��� type - ��� �����  ������������ �������
-------------------------------------------------
+﻿/*
+------------------------------------------
+Class object;		//создание объекта обычного класса
+Class<type> object;	//создание объекта шаблонного класса
+где type - тип полей создаваемого объекта
+------------------------------------------
 */
-//#include<exception>
+
+#include<iostream>
+#include<exception>
 using namespace std;
 using std::cin;
 using std::cout;
 using std::endl;
+
 #define tab "\t"
+#define delimiter "\n---------------------------------------\n"
+
 template<typename T>
 class List
 {
@@ -21,14 +25,19 @@ class List
 		Element* pNext;
 		Element* pPrev;
 	public:
-		Element(T Data, Element* pNext = nullptr, Element* pPrev = nullptr) :
-			Data(Data), pNext(pNext), pPrev(pPrev)
+		Element(T Data, Element* pNext = nullptr, Element* pPrev = nullptr)
+			:Data(Data), pNext(pNext), pPrev(pPrev)
 		{
+#ifdef DEBUG
 			cout << "EConstructor:\t" << this << endl;
+#endif // DEBUG
 		}
 		~Element()
 		{
+#ifdef DEBUG
 			cout << "EDestructor:\t" << this << endl;
+#endif // DEBUG
+
 		}
 		friend class List;
 	}*Head, *Tail;
@@ -42,11 +51,15 @@ class List
 	public:
 		ConstBaseIterator(Element* Temp = nullptr) :Temp(Temp)
 		{
+#ifdef DEBUG
 			cout << "CBItConstructor:\t" << this << endl;
+#endif // DEBUG
 		}
 		~ConstBaseIterator()
 		{
+#ifdef DEBUG
 			cout << "CBItDestructor:\t" << this << endl;
+#endif // DEBUG
 		}
 
 		bool operator==(const ConstBaseIterator& other)const
@@ -71,35 +84,35 @@ public:
 		{
 #ifdef DEBUG
 			cout << "CItConstructor:\t" << this << endl;
-#endif
+#endif // DEBUG
 		}
 		~ConstIterator()
 		{
 #ifdef DEBUG
 			cout << "CItDestructor:\t" << this << endl;
-#endif 
+#endif // DEBUG
 		}
 
 		ConstIterator& operator++()
 		{
-			Temp = Temp->pNext;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 			return *this;
 		}
 		ConstIterator operator++(int)
 		{
 			ConstIterator old = *this;
-			Temp = Temp->pNext;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 			return old;
 		}
 		ConstIterator& operator--()
 		{
-			Temp = Temp->pPrev;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 			return *this;
 		}
 		ConstIterator operator--(int)
 		{
 			ConstIterator old = *this;
-			Temp = Temp->pPrev;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 			return old;
 		}
 	};
@@ -110,35 +123,35 @@ public:
 		{
 #ifdef DEBUG
 			cout << "CRItConstructor:\t" << this << endl;
-#endif 
+#endif // DEBUG
 		}
 		~ConstReverseIterator()
 		{
 #ifdef DEBUG
 			cout << "CRItDestructor:\t" << this << endl;
-#endif 
+#endif // DEBUG
 		}
 
 		ConstReverseIterator& operator++()
 		{
-			ConstBaseIterator::Temp = Temp->pPrev;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 			return *this;
 		}
 		ConstReverseIterator operator++(int)
 		{
 			ConstReverseIterator old = *this;
-			ConstBaseIterator::Temp = Temp->pPrev;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 			return old;
 		}
 		ConstReverseIterator& operator--()
 		{
-			ConstBaseIterator::Temp = Temp->pNext;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 			return *this;
 		}
 		ConstReverseIterator operator--(int)
 		{
 			ConstReverseIterator old = *this;
-			ConstBaseIterator::Temp = Temp->pNext;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 			return old;
 		}
 	};
@@ -188,23 +201,19 @@ public:
 
 	List()
 	{
-		//����� ������ ����, ��� Head � Tail ��������� �� 0
-		Head = Tail = nullptr;
+		Head = Tail = nullptr;//Когда список пуст, его Голова и Хвост указывают на 0
 		size = 0;
 		cout << "LConstructor:\t" << this << endl;
 	}
-	//������� �� ������, ����� �� ��������� �����
-	List(const std:: initializer_list<T>&il) :List()
+	List(const std::initializer_list<T>& il) :List()
 	{
-		//int* - ���������
-		//const int* - ������������ ���������
-		//int const* - ��������� �� ���������
-		//const int const* - ����� ��������� �� ���������
+		//int* - указатель
+		//const int* - константный указатель
+		//int const* - указатель на константу
+		//const int const* - константный указатель на константу
 		for (T const* it = il.begin(); it != il.end(); ++it)
 			push_back(*it);
-		/*for (T  i : il)push_back(i);*/
 	}
-	//��� ������� ��� ������ type name 
 	List(const List<T>& other) :List()
 	{
 		for (ConstIterator it = other.cbegin(); it != other.cend(); ++it)push_back(*it);
@@ -213,10 +222,10 @@ public:
 	{
 		//while (Head)pop_front();
 		while (Tail)pop_back();
-		cout << "LDestrcutor:\t" << this << endl;
+		cout << "LDestructor:\t" << this << endl;
 	}
 
-	//					                                              Adding Elements:
+	//					Adding Elements:
 	void push_front(T Data)
 	{
 		/*Element* New = new Element(Data);
@@ -257,35 +266,35 @@ public:
 			Tail = Tail->pNext = new Element(Data, nullptr, Tail);
 		size++;
 	}
-	void insert(T Data, int Index)
+	void insert(T Data, int index)
 	{
-		if (Index > size)throw std::out_of_range("Error: Out of range exception");
-		//out of range - ����� �� ������� 
-			/*throw exception("Error: Out of range");*/
-		if (Index == 0)return push_front(Data);
-		if (Index == size)return push_back(Data);
+		if (index > size)throw std::out_of_range("Error: Out of range exception in insert() function");
+		//throw std::exception("Error: Out of range");
+		//Out of range - выход за пределы
+		if (index == 0)return push_front(Data);
+		if (index == size)return push_back(Data);
 
 		Element* Temp;
-		if (Index < size / 2)
+		if (index < size / 2)
 		{
 			Temp = Head;
-			for (int i = 0; i < Index; i++)Temp = Temp->pNext;
+			for (int i = 0; i < index; i++)Temp = Temp->pNext;
 		}
 		else
 		{
 			Temp = Tail;
-			for (int i = 0; i < size - Index- 1; i++)Temp = Temp->pPrev;
-			/*Element* New = new Element(Data);
-			New->pNext = Temp;
-			New->pPrev = Temp->pPrev;
-			Temp->pPrev->pNext = New;
-			Temp->pPrev = New;*/
-			Temp->pPrev=Temp->pPrev->pNext= new Element(Data, Temp, Temp->pPrev);
-			size++;
+			for (int i = 0; i < size - index - 1; i++)Temp = Temp->pPrev;
 		}
+		/*Element* New = new Element(Data);
+		New->pNext = Temp;
+		New->pPrev = Temp->pPrev;
+		Temp->pPrev->pNext = New;
+		Temp->pPrev = New;*/
+		Temp->pPrev = Temp->pPrev->pNext = new Element(Data, Temp, Temp->pPrev);
+		size++;
 	}
 
-	//					                                            Removing Elements:
+	//					Removing Elements:
 	void pop_front()
 	{
 		if (Head == nullptr && Tail == nullptr)return;
@@ -310,48 +319,49 @@ public:
 		Tail->pNext = nullptr;
 		size--;
 	}
-	void erase(int Index)
+	void erase(int index)
 	{
-		if (Index > size)throw out_of_range("Error: Out of range exception in erace() function");
-		if (Index == 0)return pop_front();
-		/*if (Index == size - 1) return pop_back();*/
-        //1)������� �� ���������� ��������
+		if (index >= size)throw std::out_of_range("Error: Out of range exception in erase() function");
+		if (index == 0)return pop_front();
+		//1) Доходим до удаляемого элемента:
 		Element* Temp;
-		if (Index < size / 2)
+		if (index < size / 2)
 		{
 			Temp = Head;
-			for (int i = 0; i < Index; i++)Temp = Temp->pNext;
+			for (int i = 0; i < index; i++)Temp = Temp->pNext;
 		}
 		else
 		{
 			Temp = Tail;
-			for (int i = 0; i < size-Index - 1; i++)Temp = Temp->pPrev;
+			for (int i = 0; i < size - index - 1; i++)Temp = Temp->pPrev;
 		}
-		//2)��������� ������� �� ������
+		//2) Исключаем элемент из списка:
 		Temp->pPrev->pNext = Temp->pNext;
 		Temp->pNext->pPrev = Temp->pPrev;
-		//3) ������� ������� �� ������
+		//3) Удаляем элемент из памяти:
 		delete Temp;
 		size--;
-    }
-	//					                                                  Methods:
+	}
+
+	//					Methods:
 	void print()const
 	{
 		cout << "Head: " << Head << endl;
 		for (Element* Temp = Head; Temp; Temp = Temp->pNext)
 			cout << Temp->pPrev << tab << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-		cout << "���������� ��������� " << size << endl;
+		cout << "Количество элементов " << size << endl;
 	}
 	void reverse_print()const
 	{
 		cout << "Tail: " << Tail << endl;
 		for (Element* Temp = Tail; Temp; Temp = Temp->pPrev)
 			cout << Temp->pPrev << tab << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-		cout << "���������� ��������� " << size << endl;
+		cout << "Количество элементов " << size << endl;
 	}
 };
+
 template<typename T>
-//type   //name    //(parameters)
+//type	name	 (parameters)
 List<T> operator+(const List<T>& left, const List<T>& right)
 {
 	List<T> cat = left;
@@ -362,14 +372,17 @@ List<T> operator+(const List<T>& left, const List<T>& right)
 	}
 	return cat;
 }
+
 //#define BASE_CHECK
-//#define ITERATORS_CHECK1
+//#define ITERATORS_CHECK_1
+#define ITERATORS_CHECK_2
+
 void main()
 {
 	setlocale(LC_ALL, "");
 #ifdef BASE_CHECK
 	int n;
-	cout << "������� ������ ������: "; cin >> n;
+	cout << "Введите размер списка: "; cin >> n;
 	List list;
 	for (int i = 0; i < n; i++)
 	{
@@ -378,38 +391,40 @@ void main()
 	}
 	list.print();
 	list.reverse_print();
+
 	int value;
-	int Index;
-	cout << "������� �������� ������������ ��������: "; cin >> value;
-	cout << "������� ������ ������������ ��������: "; cin >> Index;
+	int index;
+	cout << "Введите значение добавляемого элемента: "; cin >> value;
+	cout << "Введите индекс добавляемого элемента: "; cin >> index;
 	try
 	{
-
-		list.insert(value, Index);
+		list.insert(value, index);
 		list.print();
 		list.reverse_print();
 	}
-	catch (const exception& e)
+	catch (const std::exception& e)
 	{
-		//����� �� �����
-		cerr << e.what() << endl;
+		std::cerr << e.what() << endl;
 	}
-	cout << "������� ������ ���������� ��������: "; cin >> Index;
+	cout << "Введите индекс удаляемого элемента: "; cin >> index;
 	try
 	{
-	list.erase(Index);
-	list.print();
-	list.reverse_print();
+		list.erase(index);
+		list.print();
+		list.reverse_print();
 	}
 	catch (const std::exception& e)
 	{
-		cerr << e.what() << endl;
+		std::cerr << e.what() << endl;
 	}
-#endif //BASE_CHECK
-#ifdef ITERATORS_CHECK1
+#endif // BASE_CHECK
+
+#ifdef ITERATORS_CHECK_1
 	List list = { 3,5,8,13,21 };
 	list.print();
-	for (int i : list)cout << i << tab; cout << endl;
+	for (int i : list)
+		cout << i << tab;
+	cout << endl;
 
 	List::ReverseIterator rend = list.rend();
 	for (List::ReverseIterator rit = list.rbegin(); rit != rend; ++rit)
@@ -417,7 +432,8 @@ void main()
 		cout << *rit << tab;
 	}
 	cout << endl;
-#endif
+#endif // ITERATORS_CHECK_1
+
 	List<int> list1 = { 3,5,8,13,21 };
 	List<int> list2 = { 34,55,89 };
 	List<int> list3 = list1 + list2;
@@ -425,18 +441,20 @@ void main()
 	for (int i : list2)cout << i << tab; cout << endl;
 	for (int i : list3)cout << i << tab; cout << endl;
 }
+
 /*
-���������� (exception)
-throw exception ������� ���������� 
+(Исключение - Exception)
+//	Assembler
+//Arithmetical overflow exception
+//Stack overflow exception
+throw exception
 try
 {
-   
 }
-catch(type name) - ����� � ���. ������.
+catch (type name)
 {
-
 }
-
-������������� catch(...)
-{}
+catch(...)
+{
+}
 */
