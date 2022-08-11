@@ -1,4 +1,4 @@
-#include<iostream>
+п»ї#include<iostream>
 //#include<exception>
 using namespace std;
 using std::cin;
@@ -151,18 +151,18 @@ public:
 
 	List()
 	{
-		//когда список пуст, его Head и Tail указывают на 0
+		//РєРѕРіРґР° СЃРїРёСЃРѕРє РїСѓСЃС‚, РµРіРѕ Head Рё Tail СѓРєР°Р·С‹РІР°СЋС‚ РЅР° 0
 		Head = Tail = nullptr;
 		size = 0;
 		cout << "LConstructor:\t" << this << endl;
 	}
-	//передаём по ссылке, чтобы не создавать копию
+	//РїРµСЂРµРґР°С‘Рј РїРѕ СЃСЃС‹Р»РєРµ, С‡С‚РѕР±С‹ РЅРµ СЃРѕР·РґР°РІР°С‚СЊ РєРѕРїРёСЋ
 	List(const std:: initializer_list<int>&il) :List()
 	{
-		//int* - указатель
-		//const int* - констанстный указатель
-		//int const* - указатель на константу
-		//const int const* - конст указатель на константу
+		//int* - СѓРєР°Р·Р°С‚РµР»СЊ
+		//const int* - РєРѕРЅСЃС‚Р°РЅСЃС‚РЅС‹Р№ СѓРєР°Р·Р°С‚РµР»СЊ
+		//int const* - СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РєРѕРЅСЃС‚Р°РЅС‚Сѓ
+		//const int const* - РєРѕРЅСЃС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РєРѕРЅСЃС‚Р°РЅС‚Сѓ
 		/*for (int const* it = il.begin(); it != il.end(); ++it)
 			push_back(*it);*/
 		for (int i : il)push_back(i);
@@ -219,7 +219,7 @@ public:
 	void insert(int Data, int Index)
 	{
 		if (Index > size)throw std::out_of_range("Error: Out of range exception");
-		//out of range - выход за пределы 
+		//out of range - РІС‹С…РѕРґ Р·Р° РїСЂРµРґРµР»С‹ 
 			/*throw exception("Error: Out of range");*/
 		if (Index == 0)return push_front(Data);
 		if (Index == size)return push_back(Data);
@@ -274,7 +274,7 @@ public:
 		if (Index > size)throw out_of_range("Error: Out of range exception in erace() function");
 		if (Index == 0)return pop_front();
 		/*if (Index == size - 1) return pop_back();*/
-        //1)доходим до удаляемого элемента
+        //1)РґРѕС…РѕРґРёРј РґРѕ СѓРґР°Р»СЏРµРјРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
 		Element* Temp;
 		if (Index < size / 2)
 		{
@@ -286,10 +286,10 @@ public:
 			Temp = Tail;
 			for (int i = 0; i < size-Index - 1; i++)Temp = Temp->pPrev;
 		}
-		//2)исключаем элемент из списка
+		//2)РёСЃРєР»СЋС‡Р°РµРј СЌР»РµРјРµРЅС‚ РёР· СЃРїРёСЃРєР°
 		Temp->pPrev->pNext = Temp->pNext;
 		Temp->pNext->pPrev = Temp->pPrev;
-		//3) удаляем элемент из памяти
+		//3) СѓРґР°Р»СЏРµРј СЌР»РµРјРµРЅС‚ РёР· РїР°РјСЏС‚Рё
 		delete Temp;
 		size--;
     }
@@ -299,14 +299,14 @@ public:
 		cout << "Head: " << Head << endl;
 		for (Element* Temp = Head; Temp; Temp = Temp->pNext)
 			cout << Temp->pPrev << tab << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-		cout << "Количество элементов " << size << endl;
+		cout << "РљРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ " << size << endl;
 	}
 	void reverse_print()const
 	{
 		cout << "Tail: " << Tail << endl;
 		for (Element* Temp = Tail; Temp; Temp = Temp->pPrev)
 			cout << Temp->pPrev << tab << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-		cout << "Количество элементов " << size << endl;
+		cout << "РљРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ " << size << endl;
 	}
 };
 //#define BASE_CHECK
@@ -315,7 +315,7 @@ void main()
 	setlocale(LC_ALL, "");
 #ifdef BASE_CHECK
 	int n;
-	cout << "Введите размер списка: "; cin >> n;
+	cout << "Р’РІРµРґРёС‚Рµ СЂР°Р·РјРµСЂ СЃРїРёСЃРєР°: "; cin >> n;
 	List list;
 	for (int i = 0; i < n; i++)
 	{
@@ -326,8 +326,8 @@ void main()
 	list.reverse_print();
 	int value;
 	int Index;
-	cout << "Введите значение добавляемого элемента: "; cin >> value;
-	cout << "Введите индекс добавляемого элемента: "; cin >> Index;
+	cout << "Р’РІРµРґРёС‚Рµ Р·РЅР°С‡РµРЅРёРµ РґРѕР±Р°РІР»СЏРµРјРѕРіРѕ СЌР»РµРјРµРЅС‚Р°: "; cin >> value;
+	cout << "Р’РІРµРґРёС‚Рµ РёРЅРґРµРєСЃ РґРѕР±Р°РІР»СЏРµРјРѕРіРѕ СЌР»РµРјРµРЅС‚Р°: "; cin >> Index;
 	try
 	{
 
@@ -337,10 +337,10 @@ void main()
 	}
 	catch (const exception& e)
 	{
-		//вывод на экран
+		//РІС‹РІРѕРґ РЅР° СЌРєСЂР°РЅ
 		cerr << e.what() << endl;
 	}
-	cout << "Введите индекс удаляемого элемента: "; cin >> Index;
+	cout << "Р’РІРµРґРёС‚Рµ РёРЅРґРµРєСЃ СѓРґР°Р»СЏРµРјРѕРіРѕ СЌР»РµРјРµРЅС‚Р°: "; cin >> Index;
 	try
 	{
 	list.erase(Index);
@@ -364,17 +364,17 @@ void main()
 	cout << endl;
 }
 /*
-исключение (exception)
-throw exception бросить исключение 
+РёСЃРєР»СЋС‡РµРЅРёРµ (exception)
+throw exception Р±СЂРѕСЃРёС‚СЊ РёСЃРєР»СЋС‡РµРЅРёРµ 
 try
 {
    
 }
-catch(type name) - ловит и обр. исключ.
+catch(type name) - Р»РѕРІРёС‚ Рё РѕР±СЂ. РёСЃРєР»СЋС‡.
 {
 
 }
 
-универсальный catch(...)
+СѓРЅРёРІРµСЂСЃР°Р»СЊРЅС‹Р№ catch(...)
 {}
 */
