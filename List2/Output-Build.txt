@@ -1,0 +1,5 @@
+﻿1>------ Build started: Project: List2, Configuration: Debug x64 ------
+1>List2.vcxproj -> C:\Users\ALINA-PC\documents\visual studio 2017\Projects\DataContainers\x64\Debug\List2.exe
+1>List2.vcxproj -> C:\Users\ALINA-PC\documents\visual studio 2017\Projects\DataContainers\x64\Debug\List2.pdb (Partial PDB)
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
+========== Deploy: 0 succeeded, 0 failed, 0 skipped ==========
