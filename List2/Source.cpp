@@ -1,9 +1,9 @@
-#include<iostream>
+п»ї#include<iostream>
 /*
 ------------------------------------------------
-Class object; - создание объукта обычного класса 
-Class<type> object; - создание объекта шаблонного класса
-где type - тип полей  создаваемого объекта
+Class object; - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ 
+Class<type> object; - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+пїЅпїЅпїЅ type - пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ  пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 ------------------------------------------------
 */
 //#include<exception>
@@ -188,23 +188,23 @@ public:
 
 	List()
 	{
-		//когда список пуст, его Head и Tail указывают на 0
+		//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ Head пїЅ Tail пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 0
 		Head = Tail = nullptr;
 		size = 0;
 		cout << "LConstructor:\t" << this << endl;
 	}
-	//передаём по ссылке, чтобы не создавать копию
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	List(const std:: initializer_list<T>&il) :List()
 	{
-		//int* - указатель
-		//const int* - констанстный указатель
-		//int const* - указатель на константу
-		//const int const* - конст указатель на константу
+		//int* - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		//const int* - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		//int const* - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		//const int const* - пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		for (T const* it = il.begin(); it != il.end(); ++it)
 			push_back(*it);
 		/*for (T  i : il)push_back(i);*/
 	}
-	//имя функции или констр type name 
+	//пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ type name 
 	List(const List<T>& other) :List()
 	{
 		for (ConstIterator it = other.cbegin(); it != other.cend(); ++it)push_back(*it);
@@ -260,7 +260,7 @@ public:
 	void insert(T Data, int Index)
 	{
 		if (Index > size)throw std::out_of_range("Error: Out of range exception");
-		//out of range - выход за пределы 
+		//out of range - пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
 			/*throw exception("Error: Out of range");*/
 		if (Index == 0)return push_front(Data);
 		if (Index == size)return push_back(Data);
@@ -315,7 +315,7 @@ public:
 		if (Index > size)throw out_of_range("Error: Out of range exception in erace() function");
 		if (Index == 0)return pop_front();
 		/*if (Index == size - 1) return pop_back();*/
-        //1)доходим до удаляемого элемента
+        //1)пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		Element* Temp;
 		if (Index < size / 2)
 		{
@@ -327,10 +327,10 @@ public:
 			Temp = Tail;
 			for (int i = 0; i < size-Index - 1; i++)Temp = Temp->pPrev;
 		}
-		//2)исключаем элемент из списка
+		//2)пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		Temp->pPrev->pNext = Temp->pNext;
 		Temp->pNext->pPrev = Temp->pPrev;
-		//3) удаляем элемент из памяти
+		//3) пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		delete Temp;
 		size--;
     }
@@ -340,14 +340,14 @@ public:
 		cout << "Head: " << Head << endl;
 		for (Element* Temp = Head; Temp; Temp = Temp->pNext)
 			cout << Temp->pPrev << tab << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-		cout << "Количество элементов " << size << endl;
+		cout << "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ " << size << endl;
 	}
 	void reverse_print()const
 	{
 		cout << "Tail: " << Tail << endl;
 		for (Element* Temp = Tail; Temp; Temp = Temp->pPrev)
 			cout << Temp->pPrev << tab << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-		cout << "Количество элементов " << size << endl;
+		cout << "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ " << size << endl;
 	}
 };
 template<typename T>
@@ -369,7 +369,7 @@ void main()
 	setlocale(LC_ALL, "");
 #ifdef BASE_CHECK
 	int n;
-	cout << "Введите размер списка: "; cin >> n;
+	cout << "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ: "; cin >> n;
 	List list;
 	for (int i = 0; i < n; i++)
 	{
@@ -380,8 +380,8 @@ void main()
 	list.reverse_print();
 	int value;
 	int Index;
-	cout << "Введите значение добавляемого элемента: "; cin >> value;
-	cout << "Введите индекс добавляемого элемента: "; cin >> Index;
+	cout << "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: "; cin >> value;
+	cout << "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: "; cin >> Index;
 	try
 	{
 
@@ -391,10 +391,10 @@ void main()
 	}
 	catch (const exception& e)
 	{
-		//вывод на экран
+		//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 		cerr << e.what() << endl;
 	}
-	cout << "Введите индекс удаляемого элемента: "; cin >> Index;
+	cout << "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: "; cin >> Index;
 	try
 	{
 	list.erase(Index);
@@ -426,17 +426,17 @@ void main()
 	for (int i : list3)cout << i << tab; cout << endl;
 }
 /*
-исключение (exception)
-throw exception бросить исключение 
+пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (exception)
+throw exception пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
 try
 {
    
 }
-catch(type name) - ловит и обр. исключ.
+catch(type name) - пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ.
 {
 
 }
 
-универсальный catch(...)
+пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ catch(...)
 {}
 */
