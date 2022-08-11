@@ -5,6 +5,7 @@ using std::cin;
 using std::cout;
 using std::endl;
 #define tab "\t"
+
 template<typename T>
 class List
 {
@@ -17,11 +18,15 @@ class List
 		Element(T Data, Element* pNext = nullptr, Element* pPrev = nullptr)
 			:Data(Data), pNext(pNext), pPrev(pPrev)
 		{
+#ifdef DEBUG
 			cout << "EConstructor:\t" << this << endl;
+#endif // DEBUG
 		}
 		~Element()
 		{
+#ifdef DEBUG
 			cout << "EDestructor:\t" << this << endl;
+#endif // DEBUG
 		}
 		friend class List;
 	}*Head, *Tail;
@@ -178,7 +183,14 @@ public:
 	{
 		return nullptr;
 	}
-
+	ReverseIterator rbegin()
+	{
+		return Tail;
+	}
+	ReverseIterator rend()
+	{
+		return nullptr;
+	}
 	List()
 	{
 		//когда список пуст, его Head и Tail указывают на 0
@@ -195,17 +207,47 @@ public:
 		//const int const* - конст указатель на константу
 		/*for (int const* it = il.begin(); it != il.end(); ++it)
 			push_back(*it);*/
-		for (int i : il)push_back(i);
+		for (T i : il)push_back(i);
 	}
 	List(const List<T>& other) :List()
 	{
-		for (ConstIterator it = other.cbegin(); it != other.cend(); ++it)push_back(*it);
+		*this = other;
+		cout << "LCopyConstr:\t" << this << endl;
+		//for (ConstIterator it = other.cbegin(); it != other.cend(); ++it)push_back(*it);
+	}
+	List(List<T>&& other):List()
+	{
+		*this = std::move(other); //функция move принудительно вызывает MoveAssignment
+		cout << "LMoveConstructor:\t" << this << endl;
+		
 	}
 	~List()
 	{
 		//while (Head)pop_front();
 		while (Tail)pop_back();
 		cout << "LDestrcutor:\t" << this << endl;
+	}
+	//                                               Operators
+	List<T>& operator=(const List<T>& other)
+	{
+		if (this == &other)return *this;
+		while (Head)pop_front();
+		for (List<T>::ConstIterator it = other.cbegin(); it != other.cend(); ++it) push_back(*it);
+		cout << "LCopyAssignment:\t" << this << endl;
+		return *this;
+	}
+	List<T>& operator=(List<T>&& other)
+	{
+		if (this == &other)return *this;
+		while (Head)pop_front();
+		this->Head = other.Head;
+		this->Tail = other.Tail;
+		this->size = other.size;
+		other.Head = nullptr;
+		other.Tail = nullptr;
+		other.size = 0;
+		cout << "LMoveAssignment:\t" << this << endl;
+
 	}
 
 	//					                                              Adding Elements:
@@ -346,7 +388,7 @@ template<typename T>
 //type   //name    //(parameters)
 List<T> operator+(const List<T>& left, const List<T>& right)
 {
-	List<T> cat = left;
+	List<T> cat = left; //CopyConstructor
 	for (typename List<T>::ConstIterator it = right.cbegin(); it != right.cend(); ++it)
 	{
 		cat.push_back(*it);
@@ -411,11 +453,19 @@ void main()
 	cout << endl;
 #endif
 	List<int> list1 = { 3,5,8,13,21 };
+	list1 = list1;
 	List<int> list2 = { 34,55,89 };
 	List<int> list3 = list1 + list2;
 	for (int i : list1)cout << i << tab; cout << endl;
 	for (int i : list2)cout << i << tab; cout << endl;
 	for (int i : list3)cout << i << tab; cout << endl;
+
+	List<double> d_list = { 1.5, 2.7, 3.14, 8.3 };
+	d_list.print();
+	for (double i : d_list)cout << i << tab; cout << endl;
+	for (List<double>::ReverseIterator rit = d_list.rbegin(); rit != d_list.rend(); ++rit)
+		cout << *rit << tab;
+	cout << endl;
 }
 /*
 исключение (exception)
