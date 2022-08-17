@@ -77,6 +77,7 @@ public:
 };
 class ForwardList
 {
+protected:
 	Element* Head; //указывает на начало элемента списка (голова списка)
 	unsigned int size;
 public:
@@ -269,11 +270,14 @@ ForwardList operator+(const ForwardList& left, const ForwardList& right)
 	for (Element* Temp = right.Head; Temp; Temp = Temp->pNext)cat.push_back(Temp->Data);
 	cout << "Operator + "<<endl;
 	return cat;
+
 }
+
+
 //#define BASE_CHECK
 //#define OPERATOR_PLUS_CHECK
 //#define RANGE_BASED_ARRAY
-#define RANGE_BASED_FOR_LIST
+//#define RANGE_BASED_FOR_LIST
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -337,10 +341,10 @@ void main()
 		cout << arr[i] << tab;
 	cout << endl;
 
-	for (int i:arr)  //range-based for (цикл for на основе диапазона, цикл for для контейнеров)
+	for (int i : arr)  //range-based for (цикл for на основе диапазона, цикл for для контейнеров)
 		cout << i << tab;
 	cout << endl;
-//итератор 'i' последовательно принимает значение каждого элемента массива 
+	//итератор 'i' последовательно принимает значение каждого элемента массива 
 #endif
 #ifdef RANGE_BASED_FOR_LIST
 	ForwardList list = { 3, 5, 8, 13, 21 };
@@ -354,5 +358,7 @@ void main()
 	{
 		cout << *it << tab;
 	}*/
+
 #endif
+	
 }
