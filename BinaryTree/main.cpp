@@ -37,7 +37,7 @@ public:
 	}
 	~Tree()
 	{
-		clear(Root);
+		Clear(Root);
 		Root = nullptr;
 		cout << "TDestructor:\t" << this << endl;
 		cout << delimiter;
@@ -71,14 +71,25 @@ public:
 		if (Root->pRight == nullptr)return Root->Data;
 		return maxValue(Root->pRight);
 	}
-	void clear(Element* Root)
+	int Count(Element* Root)const
+	{
+		if (Root == nullptr)return 0;
+		else {
+			return 1 + Count(Root->pLeft) + Count(Root->pRight);
+		}
+	}
+	int Sum(Element* Root)const
+	{
+		if (Root == 0) return 0;
+		return Root->Data + Sum(Root->pLeft) + Sum(Root->pRight);
+
+	}
+	void Clear(Element* Root)
 	{
 		if (Root == nullptr)return;
-		//проходим по дереву до конечного значения
-		clear(Root->pLeft); clear(Root->pRight);
+		Clear(Root->pLeft);Clear (Root->pRight);
 		delete Root;
 	}
-
 	void print(Element* Root)const
 	{
 		if (Root == nullptr)return;
@@ -103,9 +114,12 @@ void main()
 	}
 	tree.print(tree.getRoot());
 	cout << delimiter;
+	cout << "Количество элементов дерева:" << tree.Count(tree.getRoot()) << endl;
 	cout << "Минимальное значение: " << tree.minValue(tree.getRoot()) << endl;
 	cout << "Максимальное значение: " << tree.maxValue(tree.getRoot()) << endl;
-	tree.clear(tree.getRoot());
-	/*tree.print(tree.getRoot());*/
+	cout << "Сумма элементов: " << tree.Sum(tree.getRoot()) << endl;
+	/*tree.Clear(tree.getRoot());*/
+	tree.print(tree.getRoot());
+	
 	
 }
