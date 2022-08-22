@@ -57,7 +57,10 @@ public:
 	{
 		insert(Data, Root);
 	}
-	
+	void erase(int Data)
+	{
+		erase(Data, Root);
+	}
 	int minValue()const
 	{
 		return minValue(Root);
@@ -110,6 +113,33 @@ private:
 		{
 			if (Root->pRight == nullptr)Root->pRight = new Element(Data);
 			else insert(Data, Root->pRight);
+		}
+	}
+	void erase(int Data, Element*& Root)
+	{
+		if (Root == nullptr)return;
+		erase(Data, Root->pLeft);
+		erase(Data, Root->pRight);
+		if (Data == Root->Data)
+		{
+			if (Root->pLeft == Root->pRight)
+			{
+				delete Root;
+				Root = nullptr;
+			}
+			else 
+			{ 
+				if (count(Root->pLeft) > count(Root->pRight))
+				{
+					Root->Data = maxValue(Root->pLeft);	
+					erase(maxValue(Root->pLeft), Root->pLeft);
+				}
+				else//В противном случае
+				{
+					Root->Data = minValue(Root->pRight);
+					erase(minValue(Root->pRight), Root->pRight);
+				}
+			}
 		}
 	}
 	int minValue(Element* Root)const
@@ -187,10 +217,11 @@ public:
 		insert(Data, Root);
 	}
 };
-
+//#define DASE_CHECK
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef BASE_CHECK
 	int n;
 	cout << "Введите размер дерева: "; cin >> n;
 	Tree tree;
@@ -208,7 +239,7 @@ void main()
 	cout << "Сумма элементов: " << tree.Sum() << endl;
 	cout << "Среднее арифметическое элементов дерева: " << tree.Avg() << endl;
 	cout << "Глубина дерева: " << tree.depth() << endl;
-	/*tree.Clear(tree.getRoot());*/
+	/*tree.Clear();*/
 	/*tree.print(tree.getRoot());*/
 	UniqueTree unique_tree;
 	for (int i = 0; i < n; i++)
@@ -225,9 +256,14 @@ void main()
 	cout << "Сумма элементов: " << unique_tree.Sum() << endl;
 	cout << "Среднее арифметическое элементов дерева: " << unique_tree.Avg() << endl;
 	cout << "Глубина дерева: " << unique_tree.depth() << endl;
+#endif //BASE_CHECK
 	
-	Tree deep_tree = { 50, 25, 75, 16, 32, 64,  85 };
+	Tree deep_tree = { 50, 25, 75, 16, 32, 64,  85, 48, 49 };
 	deep_tree.print();
 	cout << "Глубина дерева: " << deep_tree.depth() << endl;
+	int value;
+	cout << "Введите удаляемое значение: "; cin >> value;
+	deep_tree.erase(value);
+	deep_tree.print();
 
 }
